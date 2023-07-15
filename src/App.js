@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import CardList from './comp/CardList';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+  const [notes, setNotes] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        'https://dzse5zr1rf.execute-api.us-east-1.amazonaws.com/dev/notes'
+      );
+      setNotes(response.data.Items);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    
+
+    fetchData();
+  }, []);
+
+  return <CardList notes={notes} />;
+};
 
 export default App;
